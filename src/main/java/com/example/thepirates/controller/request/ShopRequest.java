@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 
 import com.example.thepirates.common.converter.DayOfWeekConverter;
 import com.example.thepirates.controller.common.DayOfWeek;
+import com.example.thepirates.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -58,6 +59,20 @@ public class ShopRequest {
 			this.phone = phone;
 			this.businessTimes = businessTimes;
 		}
+
+		public Shop toEntity() {
+			return Shop.builder()
+					.name(name)
+					.owner(owner)
+					.description(description)
+					.level(level)
+					.address(address)
+					.phone(phone)
+					.businessTimes(businessTimes)
+					.build();
+		}
+
+
 
 		@Getter
 		@Setter

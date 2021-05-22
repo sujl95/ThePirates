@@ -45,7 +45,7 @@ public class ShopService {
 	@Transactional
 	public void registerShop(ShopRequest.ShopCreate shopCreate) {
 		registerAble(shopCreate);
-		Shop shop = Shop.from(shopCreate);
+		Shop shop = shopCreate.toEntity();
 		shopRepository.saveAndFlush(shop);
 		log.info("점포 생성 id = {}", shop.getId());
 	}

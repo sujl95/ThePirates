@@ -31,11 +31,23 @@ public class Shop {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SHOP_ID")
 	private Long id;
+
+	@Column(nullable = false)
 	private String name;
+
+	@Column(nullable = false)
 	private String owner;
+
+	@Column(nullable = false)
 	private String description;
+
+	@Column(nullable = false)
 	private Integer level;
+
+	@Column(nullable = false)
 	private String address;
+
+	@Column(nullable = false)
 	private String phone;
 
 	@OneToMany(mappedBy = "shop", cascade = ALL)
@@ -75,17 +87,6 @@ public class Shop {
 		holidays.add(holiday);
 	}
 
-	public static Shop from(ShopRequest.ShopCreate shopCreate) {
-		return Shop.builder()
-				.name(shopCreate.getName())
-				.owner(shopCreate.getOwner())
-				.description(shopCreate.getDescription())
-				.level(shopCreate.getLevel())
-				.address(shopCreate.getAddress())
-				.phone(shopCreate.getPhone())
-				.businessTimes(shopCreate.getBusinessTimes())
-				.build();
-	}
 
 	@Override
 	public boolean equals(Object o) {
