@@ -21,7 +21,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.example.thepirates.common.converter.DayOfWeekConverter;
 import com.example.thepirates.controller.request.ShopRequest;
@@ -35,6 +38,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ShopControllerTest {
 
 	@Autowired
+	private WebApplicationContext ctx;
+
 	MockMvc mockMvc;
 
 	String url = "/api/shops";
@@ -47,6 +52,13 @@ public class ShopControllerTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		dayOfWeekConverter = new DayOfWeekConverter();
+
+		mockMvc = MockMvcBuilders
+				.webAppContextSetup(ctx)
+				.addFilters(new CharacterEncodingFilter("UTF-8", true))
+				.alwaysDo(print())
+				.build();
+
 		List<ShopRequest.ShopCreate.BusinessTime> mermaidBusinessTimes = new ArrayList<>();
 		ShopRequest.ShopCreate.BusinessTime mermaidBusinessTime = new ShopRequest.ShopCreate.BusinessTime();
 		mermaidBusinessTime.setDay(dayOfWeekConverter.convertToEntityAttribute("Monday"));
