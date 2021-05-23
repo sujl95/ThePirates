@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import com.example.thepirates.common.util.DateUtils;
 import com.example.thepirates.controller.request.ShopRequest;
@@ -59,7 +60,7 @@ public class ShopService {
 
 	@Transactional(readOnly = true)
 	public List<ShopResponse.ShopFind> getShops() {
-		List<Shop> shops = shopRepository.findAllByOrderByLevelAsc();
+		List<Shop> shops = shopRepository.findAllList();
 		List<ShopResponse.ShopFind> shopFinds = new ArrayList<>();
 		for (Shop shop : shops) {
 			LocalDate date = LocalDate.now();
@@ -78,7 +79,10 @@ public class ShopService {
 
 	@Transactional(readOnly = true)
 	public ShopResponse.ShopDetail getShop(Long shopId) {
-		Shop shop = shopRepository.findById(shopId).orElseThrow(ShopNotFoundException::new);
+		Shop shop = shopRepository.findByIdDetail(shopId);
+		if (ObjectUtils.isEmpty(shop)) {
+			throw new ShopNotFoundException();
+		}
 		Set<Holiday> holidays = shop.getHolidays();
 		Set<BusinessTime> businessTimes = shop.getBusinessTimes();
 		LocalDate date = LocalDate.now();
