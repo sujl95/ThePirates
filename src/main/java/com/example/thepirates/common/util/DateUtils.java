@@ -31,13 +31,8 @@ public class DateUtils {
 
 	public static BusinessStatus getBusinessStatus(Set<BusinessTime> businessTimes, LocalDate date, LocalTime time) {
 		for (BusinessTime businessTime : businessTimes) {
-			if (isDayEqualsWeek(date, businessTime)) {
-				LocalTime close = businessTime.getClose();
-				LocalTime open = businessTime.getOpen();
-				close = getLocalTime(close);
-				if (isShopStatusOpen(time, close, open)) {
-					return OPEN;
-				}
+			if (isDayEqualsWeek(date, businessTime) && isShopStatusOpen(time, getLocalTime(businessTime.getClose()), businessTime.getOpen())) {
+				return OPEN;
 			}
 		}
 		return CLOSE;
